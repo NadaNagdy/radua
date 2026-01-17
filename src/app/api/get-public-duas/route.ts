@@ -10,7 +10,7 @@ export async function GET(request: NextRequest) {
     // Note: In production, you'd use a real database
     // For now, we'll simulate with storage API
     
-    const approvedDuas = [
+    const approvedDuas: any[] = [
       // These will come from your storage/database
       // For demo purposes, here's the structure:
     ];
