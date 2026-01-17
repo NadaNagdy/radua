@@ -4,10 +4,10 @@ import { useState, useEffect } from 'react';
 import { Heart, BookOpen, Share2, Filter } from 'lucide-react';
 
 export default function PublicDuasPage() {
-  const [duas, setDuas] = useState([]);
+  const [duas, setDuas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedCategory, setSelectedCategory] = useState('all');
-  const [likedDuas, setLikedDuas] = useState(new Set());
+  const [likedDuas, setLikedDuas] = useState(new Set<string>());
 
   const categories = [
     { id: 'all', name: 'الكل', icon: '📚' },
@@ -37,7 +37,7 @@ export default function PublicDuasPage() {
     }
   };
 
-  const handleLike = async (duaId) => {
+  const handleLike = async (duaId: string) => {
     const newLiked = new Set(likedDuas);
     if (newLiked.has(duaId)) {
       newLiked.delete(duaId);
@@ -46,7 +46,6 @@ export default function PublicDuasPage() {
     }
     setLikedDuas(newLiked);
     
-    // Update likes count in backend
     try {
       await fetch('/api/like-dua', {
         method: 'POST',
@@ -58,7 +57,7 @@ export default function PublicDuasPage() {
     }
   };
 
-  const copyToClipboard = (text) => {
+  const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     alert('تم نسخ الدعاء ✅');
   };
@@ -66,7 +65,6 @@ export default function PublicDuasPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-teal-50 via-emerald-50 to-cyan-50 py-12 px-4">
       <div className="max-w-6xl mx-auto">
-        {/* Header */}
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-emerald-800 mb-4">
             🤲 أدعية المسلمين
@@ -76,7 +74,6 @@ export default function PublicDuasPage() {
           </p>
         </div>
 
-        {/* Category Filter */}
         <div className="mb-8 overflow-x-auto">
           <div className="flex gap-3 pb-4 min-w-max justify-center">
             {categories.map((cat) => (
@@ -96,7 +93,6 @@ export default function PublicDuasPage() {
           </div>
         </div>
 
-        {/* Loading State */}
         {loading && (
           <div className="text-center py-20">
             <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-600"></div>
@@ -104,7 +100,6 @@ export default function PublicDuasPage() {
           </div>
         )}
 
-        {/* Duas Grid */}
         {!loading && duas.length === 0 && (
           <div className="text-center py-20 bg-white rounded-2xl shadow-lg">
             <BookOpen className="w-16 h-16 text-emerald-300 mx-auto mb-4" />
@@ -119,21 +114,18 @@ export default function PublicDuasPage() {
               key={dua.id}
               className="bg-white rounded-2xl shadow-lg hover:shadow-2xl transition-all p-6 border-2 border-emerald-100 hover:border-emerald-300"
             >
-              {/* Category Badge */}
               <div className="mb-4">
                 <span className="inline-block bg-emerald-100 text-emerald-700 px-3 py-1 rounded-full text-sm font-semibold">
                   {dua.category}
                 </span>
               </div>
 
-              {/* Dua Text */}
               <div className="mb-4">
                 <p className="text-xl font-semibold text-emerald-900 leading-relaxed text-right" dir="rtl">
                   {dua.duaText}
                 </p>
               </div>
 
-              {/* Simplified Meaning */}
               {dua.simplifiedMeaning && (
                 <div className="mb-4 p-3 bg-emerald-50 rounded-lg">
                   <p className="text-sm text-emerald-700 text-right" dir="rtl">
@@ -142,7 +134,6 @@ export default function PublicDuasPage() {
                 </div>
               )}
 
-              {/* Spiritual Touch */}
               {dua.spiritualTouch && (
                 <div className="mb-4 p-3 bg-teal-50 rounded-lg">
                   <p className="text-sm text-teal-700 text-right" dir="rtl">
@@ -151,7 +142,6 @@ export default function PublicDuasPage() {
                 </div>
               )}
 
-              {/* Actions */}
               <div className="flex items-center justify-between pt-4 border-t border-emerald-100">
                 <button
                   onClick={() => handleLike(dua.id)}
@@ -176,7 +166,6 @@ export default function PublicDuasPage() {
                 </button>
               </div>
 
-              {/* Date */}
               <div className="mt-3 text-xs text-gray-500 text-center">
                 {new Date(dua.createdAt).toLocaleDateString('ar-EG')}
               </div>
