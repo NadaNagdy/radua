@@ -1,9 +1,9 @@
-import { categoryDuas } from '@/lib/duas';
+import { getCategoryDuas } from '@/lib/duas';
 import DuaCard from '@/components/dua-card';
 import { FloatingStars, DecorativeDivider, CrescentMoon } from '@/components/islamic-decorations';
 
 export default function ProphetsDuasPage() {
-  const duas = categoryDuas['prophets-duas'] || [];
+  const duas = getCategoryDuas('prophets-duas');
 
   return (
     <div className="min-h-screen bg-hero-gradient pt-24 pb-16 px-4">
@@ -12,10 +12,11 @@ export default function ProphetsDuasPage() {
         <CrescentMoon className="w-16 h-16 text-gold mx-auto mb-4" />
         <h1 className="font-amiri text-4xl text-cream mb-4">أدعية الأنبياء</h1>
         <DecorativeDivider className="mb-12" />
+        
         <div className="space-y-6 text-left">
           {duas.map((dua, index) => (
             <DuaCard
-              key={index}
+              key={dua.id}
               title={`دعاء الأنبياء ${index + 1}`}
               dua={dua}
               showActions={true}
