@@ -5,22 +5,20 @@ import DuaCard from '@/components/dua-card';
 import { FloatingStars } from '@/components/islamic-decorations';
 import { ArrowRight } from 'lucide-react';
 
-// Add this function here
 export async function generateStaticParams() {
-  // Generate params for all 30 days of Ramadan
-  return Array.from({ length: 30 }, (_, i) => ({
-    id: String(i + 1),
+  // Generate params based on available duas
+  return dailyDuas.map((dua) => ({
+    id: dua.id,
   }));
 }
 
 type Props = {
-  params: Promise<{ id: string }>; // Changed to Promise
+  params: Promise<{ id: string }>;
 };
 
 export default async function DuaDetailPage({ params }: Props) {
-  const { id } = await params; // Await the params
-  const day = Number(id);
-  const dua = dailyDuas.find(d => d.day === day);
+  const { id } = await params;
+  const dua = dailyDuas.find(d => d.id === id);
   
   if (!dua) {
     notFound();
@@ -37,7 +35,33 @@ export default async function DuaDetailPage({ params }: Props) {
           </Link>
           <span className="font-cairo text-gold">{dua.arabicTitle}</span>
         </div>
-        <DuaCard day={dua.day} title={dua.arabicTitle} dua={dua.dua} audioUrl={dua.audioUrl} />
+        
+        <DuaCard 
+          title={dua.arabicTitle} 
+          dua={dua.dua}
+          showActions={true}
+        />
+        
+        {dua.transliteration && (
+          <div className="mt-6 p-6 bg-card rounded-3xl border border-gold/20">
+            <h3 className="text-gold font-amiri text-lg mb-2">النطق</h3>
+            <p className="text-cream/80 italic">{dua.transliteration}</p>
+          </div>
+        )}
+        
+        {dua.meaning && (
+          <div className="mt-6 p-6 bg-card rounded-3xl border border-gold/20">
+            <h3 className="text-gold font-amiri text-lg mb-2">المعنى</h3>
+            <p className="text-cream/80">{dua.meaning}</p>
+          </div>
+        )}
+        
+        {dua.source && (
+          <div className="mt-6 p-6 bg-card rounded-3xl border border-gold/20">
+            <h3 className="text-gold font-amiri text-lg mb-2">المصدر</h3>
+            <p className="text-cream/80">{dua.source}</p>
+          </div>
+        )}
       </div>
     </div>
   );
