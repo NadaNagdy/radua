@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Loader2, PlusCircle } from 'lucide-react';
-import { generateCategoryDuas } from '@/ai/flows/generate-category-duas-flow';
+import { generateCategoryDuas } from '@/ai/flows/generate-category-dues-flow';
 import { useToast } from '@/hooks/use-toast';
 
 const specialCategoryLinks: Record<string, string> = {
@@ -143,4 +143,13 @@ export default function CategoriesPage() {
                   {currentDuas.length >= 50 ? 'تم الوصول للحد الأقصى' : 'استكشف المزيد من الأدعية بالذكاء الاصطناعي'}
                 </span>
               </Button>
-               <p classNa
+              <p className="mt-4 text-cream/30 text-sm italic">
+                يمكنك استكشاف ما يصل إلى 50 دعاءً في كل قسم
+              </p>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
