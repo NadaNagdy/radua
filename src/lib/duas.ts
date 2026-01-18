@@ -78,7 +78,7 @@ export const categoryDuas: CategoryDua[] = [
     category: 'knowledge',
     source: 'سورة طه: 114'
   }
-];
+},        // ✅ فاصلة فقط
   {
     id: '1',
     text: 'اللهم إني أسألك العافية في الدنيا والآخرة',
