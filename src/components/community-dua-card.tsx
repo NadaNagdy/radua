@@ -1,66 +1,124 @@
+'use client';
 
-"use client";
+import { useState } from 'react';
+import { Volume2, VolumeX, Pause } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-import React from 'react';
-import { HandHeart, Star } from 'lucide-react';
-import { cn } from '@/lib/utils';
-import { CommunityDua } from '@/lib/duas';
-import { useLocalStorage } from '@/hooks/use-local-storage';
-import { Button } from './ui/button';
-
-interface CommunityDuaCardProps {
-  dua: CommunityDua;
+interface DuaCardProps {
+  title: string;
+  dua: string;
+  showActions?: boolean;
 }
 
-const CommunityDuaCard: React.FC<CommunityDuaCardProps> = ({ dua }) => {
-  const [amenedDuas, setAmenedDuas] = useLocalStorage<number[]>('amened_duas', []);
-  const isAmened = amenedDuas.includes(dua.id);
+export default function DuaCard({ title, dua, showActions = false }: DuaCardProps) {
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPaused, setIsPaused] = useState(false);
 
-  const handleAmenClick = () => {
-    if (isAmened) {
-      setAmenedDuas(amenedDuas.filter(id => id !== dua.id));
-    } else {
-      setAmenedDuas([...amenedDuas, dua.id]);
+  const speakDua = () => {
+    // إيقاف أي قراءة سابقة
+    window.speechSynthesis.cancel();
+
+    if (isPlaying && !isPaused) {
+      // إيقاف مؤقت
+      window.speechSynthesis.pause();
+      setIsPaused(true);
+      return;
     }
+
+    if (isPaused) {
+      // استئناف
+      window.speechSynthesis.resume();
+      setIsPaused(false);
+      return;
+    }
+
+    // بدء القراءة
+    const utterance = new SpeechSynthesisUtterance(dua);
+    
+    // إعدادات اللغة العربية
+    utterance.lang = 'ar-SA'; // السعودية
+    utterance.rate = 0.8; // سرعة القراءة (أبطأ قليلاً)
+    utterance.pitch = 1; // نغمة الصوت
+    utterance.volume = 1; // مستوى الصوت
+
+    // محاولة اختيار صوت عربي
+    const voices = window.speechSynthesis.getVoices();
+    const arabicVoice = voices.find(voice => 
+      voice.lang.includes('ar') || voice.name.includes('Arabic')
+    );
+    if (arabicVoice) {
+      utterance.voice = arabicVoice;
+    }
+
+    utterance.onstart = () => {
+      setIsPlaying(true);
+      setIsPaused(false);
+    };
+
+    utterance.onend = () => {
+      setIsPlaying(false);
+      setIsPaused(false);
+    };
+
+    utterance.onerror = () => {
+      setIsPlaying(false);
+      setIsPaused(false);
+      alert('عذراً، حدث خطأ أثناء القراءة');
+    };
+
+    window.speechSynthesis.speak(utterance);
   };
 
-  const amenCount = dua.amens + (isAmened ? 1 : 0);
+  const stopSpeaking = () => {
+    window.speechSynthesis.cancel();
+    setIsPlaying(false);
+    setIsPaused(false);
+  };
 
   return (
-    <div className={cn(
-      "relative bg-card-gradient rounded-3xl p-6 border transition-all duration-300 shadow-md",
-      dua.isGolden ? "border-gold/50 shadow-gold/10" : "border-gold/20"
-    )}>
-      {dua.isGolden && (
-        <div className="absolute -top-3 -right-3 p-2 bg-gold rounded-full shadow-lg">
-          <Star className="w-5 h-5 text-navy fill-current" />
-        </div>
-      )}
-      <div className="flex items-start gap-4">
-        <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center text-gold font-bold text-xl">
-          {dua.author.charAt(0)}
-        </div>
-        <div className="flex-1 text-right">
-          <p className="font-bold text-cream">{dua.author}</p>
-          <p className="font-amiri text-cream/90 text-lg mt-2">{dua.text}</p>
-        </div>
-      </div>
-      <div className="mt-4 pt-4 border-t border-gold/10 flex justify-end items-center gap-4">
-        <span className="text-sm text-gold tabular-nums">{amenCount.toLocaleString('ar')}</span>
-        <Button
-          onClick={handleAmenClick}
-          variant="ghost"
-          className={cn(
-            "flex items-center gap-2 transition-colors",
-            isAmened ? "text-gold" : "text-cream/60 hover:text-gold"
-          )}
-        >
-          <HandHeart className={cn("w-5 h-5", isAmened && "fill-current")} />
-          <span>{isAmened ? 'تم التأمين' : 'آمين'}</span>
-        </Button>
-      </div>
-    </div>
-  );
-};
+    <Card className="bg-card-gradient border-gold/20 rounded-3xl overflow-hidden">
+      <CardHeader className="flex flex-row items-center justify-between p-6">
+        <CardTitle className="font-amiri text-2xl text-gold">
+          {title}
+        </CardTitle>
+        
+        {showActions && (
+          <div className="flex gap-2">
+            <Button
+              onClick={speakDua}
+              variant="ghost"
+              size="icon"
+              className="text-gold hover:bg-gold/10 rounded-full"
+              title={isPlaying ? (isPaused ? "استئناف" : "إيقاف مؤقت") : "استماع"}
+            >
+              {isPlaying ? (
+                isPaused ? <Volume2 className="w-5 h-5" /> : <Pause className="w-5 h-5" />
+              ) : (
+                <Volume2 className="w-5 h-5" />
+              )}
+            </Button>
 
-export default CommunityDuaCard;
+            {isPlaying && (
+              <Button
+                onClick={stopSpeaking}
+                variant="ghost"
+                size="icon"
+                className="text-red-500 hover:bg-red-500/10 rounded-full"
+                title="إيقاف"
+              >
+                <VolumeX className="w-5 h-5" />
+              </Button>
+            )}
+          </div>
+        )}
+      </CardHeader>
+
+      <CardContent className="px-10 pb-10 pt-4" dir="rtl">
+        <p className="text-2xl font-amiri leading-relaxed text-cream text-right">
+          {dua}
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
