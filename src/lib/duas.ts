@@ -79,7 +79,6 @@ export const categoryDuas: CategoryDua[] = [
     source: 'سورة طه: 114'
   }
 ];
-export const categoryDuas: CategoryDua[] = [
   {
     id: '1',
     text: 'اللهم إني أسألك العافية في الدنيا والآخرة',
@@ -129,7 +128,6 @@ export const categoryDuas: CategoryDua[] = [
     source: 'دعاء رمضان'
   }
 ];
-export const communityDuas: CommunityDua[] = [
   {
     id: '1',
     text: 'اللهم إني أسألك العافية في الدنيا والآخرة',
