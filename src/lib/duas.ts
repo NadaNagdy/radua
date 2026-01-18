@@ -115,3 +115,26 @@ export function getCategoryDuas(categoryId?: string): CategoryDua[] {
 export function getCategories(): Category[] {
   return categories;
 }
+export interface DuaItem {
+  id: string;
+  text: string;
+  source?: string;
+}
+
+// تحويل categoryDuas من array لـ object مجمع حسب category
+export function getCategoryDuasGrouped(): Record<string, DuaItem[]> {
+  const grouped: Record<string, DuaItem[]> = {};
+  
+  categoryDuas.forEach(dua => {
+    if (!grouped[dua.category]) {
+      grouped[dua.category] = [];
+    }
+    grouped[dua.category].push({
+      id: dua.id,
+      text: dua.text,
+      source: dua.source
+    });
+  });
+  
+  return grouped;
+}
