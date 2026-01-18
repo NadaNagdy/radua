@@ -1,6 +1,6 @@
 import HeroSection from '@/components/hero-section';
 import DuaOfTheDay from '@/components/DuaOfTheDay';
-import RamadanReflection from '@/components/ramadan-reflections';
+import RamadanReflection from '@/components/RamadanReflection';
 import { dailyDuas } from '@/lib/duas';
 import { getRamadanDay, isRamadan } from '@/lib/date-helper';
 
