@@ -77,31 +77,6 @@ export const categoryDuas: CategoryDua[] = [
     text: 'رَبِّ زِدْنِي عِلْمًا',
     category: 'knowledge',
     source: 'سورة طه: 114'
-  }
-},        // ✅ فاصلة فقط
-  {
-    id: '1',
-    text: 'اللهم إني أسألك العافية في الدنيا والآخرة',
-    category: 'general',
-    source: 'حديث شريف'
-  },
-  {
-    id: '2',
-    text: 'رَبَّنَا آتِنَا فِي الدُّنْيَا حَسَنَةً وَفِي الْآخِرَةِ حَسَنَةً وَقِنَا عَذَابَ النَّارِ',
-    category: 'quran',
-    source: 'سورة البقرة: 201'
-  },
-  {
-    id: '3',
-    text: 'أَعُوذُ بِكَلِمَاتِ اللَّهِ التَّامَّاتِ مِنْ شَرِّ مَا خَلَقَ',
-    category: 'protection',
-    source: 'حديث شريف'
-  },
-  {
-    id: '4',
-    text: 'رَبِّ زِدْنِي عِلْمًا',
-    category: 'knowledge',
-    source: 'سورة طه: 114'
   },
   {
     id: '5',
@@ -128,6 +103,8 @@ export const categoryDuas: CategoryDua[] = [
     source: 'دعاء رمضان'
   }
 ];
+
+export const communityDuas: CommunityDua[] = [
   {
     id: '1',
     text: 'اللهم إني أسألك العافية في الدنيا والآخرة',
@@ -162,13 +139,13 @@ export function getCategoryDuas(categoryId?: string): CategoryDua[] {
 export function getCategories(): Category[] {
   return categories;
 }
+
 export interface DuaItem {
   id: string;
   text: string;
   source?: string;
 }
 
-// تحويل categoryDuas من array لـ object مجمع حسب category
 export function getCategoryDuasGrouped(): Record<string, DuaItem[]> {
   const grouped: Record<string, DuaItem[]> = {};
   
@@ -185,6 +162,7 @@ export function getCategoryDuasGrouped(): Record<string, DuaItem[]> {
   
   return grouped;
 }
+
 export interface DailyDua {
   id: string;
   title: string;
