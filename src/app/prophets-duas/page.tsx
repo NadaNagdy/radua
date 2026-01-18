@@ -18,7 +18,7 @@ export default function ProphetsDuasPage() {
             <DuaCard
               key={dua.id}
               title={`دعاء الأنبياء ${index + 1}`}
-              dua={dua}
+              dua={dua.text}
               showActions={true}
             />
           ))}
