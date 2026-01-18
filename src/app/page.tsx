@@ -9,7 +9,7 @@ export default function HomePage() {
   const isRamadanNow = isRamadan();
   
   const duaForToday = isRamadanNow && ramadanDay 
-    ? dailyDuas.find(d => d.day === ramadanDay)
+    ? dailyDuas[(ramadanDay - 1) % dailyDuas.length] || dailyDuas[0]
     : dailyDuas[0]; // Fallback to day 1 if not ramadan
 
   return (
