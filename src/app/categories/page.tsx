@@ -18,11 +18,12 @@ const specialCategoryLinks: Record<string, string> = {
 };
 
 type LocalDuaItem = string | {
-  dua: string;
+  id: string;
+  text: string;
+  source?: string;
+  dua?: string;
   transliteration?: string;
   meaning?: string;
-  source?: string;
-  text?: string;
 };
 
 export default function CategoriesPage() {
@@ -30,7 +31,7 @@ export default function CategoriesPage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [categoryDuas, setCategoryDuas] = useState<Record<string, LocalDuaItem[]>>(() => {
     const grouped = getCategoryDuasGrouped();
-    return grouped as Record<string, LocalDuaItem[]>;
+    return grouped as unknown as Record<string, LocalDuaItem[]>;
   });
   const { toast } = useToast();
 
@@ -120,7 +121,7 @@ export default function CategoriesPage() {
             {currentDuas.map((dua, index) => {
               const duaText = typeof dua === 'string' 
                 ? dua 
-                : (dua as any).text || (dua as any).dua || '';
+                : dua.text || dua.dua || '';
               return (
                 <DuaCard 
                   key={`${activeCategory}-${index}`} 
