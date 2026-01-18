@@ -1,5 +1,4 @@
 'use client';
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sparkles } from 'lucide-react';
@@ -15,22 +14,25 @@ const RamadanReflection = () => {
   }, []);
 
   if (!reflection) {
-    return null; // Or a loading skeleton
+    return null;
   }
 
   return (
     <section className="py-20 animate-fade-in" style={{ animationDelay: '0.5s' }}>
       <div className="container mx-auto px-4">
         <Card className="bg-card-gradient text-cream rounded-3xl shadow-2xl max-w-3xl mx-auto overflow-hidden border border-gold/20">
-          <CardHeader className="flex flex-row items-center justify-between p-6">
-            <CardTitle className="flex items-center gap-3 text-2xl font-cairo text-gold">
+          <CardHeader className="flex flex-row items-center justify-center p-6">
+            <CardTitle className="flex items-center gap-3 text-3xl font-cairo text-gold">
               <Sparkles className="w-7 h-7 text-gold animate-pulse" />
               تأملات رمضانية
+              <Sparkles className="w-7 h-7 text-gold animate-pulse" />
             </CardTitle>
           </CardHeader>
-          <CardContent className="px-10 pb-10 pt-4">
-            <div className="space-y-6">
-              <h3 className="text-3xl font-amiri text-gold text-center">{reflection.title}</h3>
+          <CardContent className="px-10 pb-10 pt-4" dir="rtl">
+            <div className="space-y-6 text-right">
+              <h3 className="text-3xl font-amiri text-gold text-center">
+                {reflection.title}
+              </h3>
               
               <div className="bg-cream/5 p-6 rounded-xl">
                 <p className="text-xl font-amiri leading-relaxed text-center italic">
@@ -58,4 +60,4 @@ const RamadanReflection = () => {
   );
 };
 
-export default RamadanReflection;
+export default RamadanReflection;  // ← تأكدي من السطر ده
