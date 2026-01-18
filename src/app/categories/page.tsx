@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { categories, getCategoryDuasGrouped, type DuaItem } from '@/lib/duas';
+import { categories, getCategoryDuasGrouped } from '@/lib/duas';
 import { FloatingStars, DecorativeDivider, CrescentMoon } from '@/components/islamic-decorations';
 import DuaCard from '@/components/dua-card';
 import { cn } from '@/lib/utils';
@@ -27,7 +27,10 @@ type DuaItem = string | {
 export default function CategoriesPage() {
   const [activeCategory, setActiveCategory] = useState<string>(categories.filter(c => !specialCategoryLinks[c.id])[0].id);
   const [isGenerating, setIsGenerating] = useState(false);
-const [categoryDuas, setCategoryDuas] = useState<Record<string, DuaItem[]>>(getCategoryDuasGrouped());  const { toast } = useToast();
+  const [categoryDuas, setCategoryDuas] = useState<Record<string, DuaItem[]>>(getCategoryDuasGrouped());
+  const { toast } = useToast();
+  
+  // باقي الكود...
 
   const handleGenerateDua = async () => {
     if (!activeCategory || specialCategoryLinks[activeCategory]) return;
