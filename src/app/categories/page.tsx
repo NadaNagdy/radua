@@ -8,7 +8,7 @@ import { cn } from '@/lib/utils';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Loader2, PlusCircle } from 'lucide-react';
-import { generateCategoryDuas } from '@/ai/flows/generate-category-dues-flow';
+import { generateCategoryDuas } from '@/ai/flows/generate-category-duas-flow';
 import { useToast } from '@/hooks/use-toast';
 
 const specialCategoryLinks: Record<string, string> = {
