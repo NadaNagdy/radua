@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from 'react';
-import { categories, categoryDuas as initialCategoryDuas } from '@/lib/duas';
+import { categories, getCategoryDuasGrouped } from '@/lib/duas';
 import { FloatingStars, DecorativeDivider, CrescentMoon } from '@/components/islamic-decorations';
 import DuaCard from '@/components/dua-card';
 import { cn } from '@/lib/utils';
