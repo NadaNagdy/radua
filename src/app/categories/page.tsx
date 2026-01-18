@@ -17,20 +17,22 @@ const specialCategoryLinks: Record<string, string> = {
   'quranic-duas': '/quranic-duas'
 };
 
-type DuaItem = string | {
+type LocalDuaItem = string | {
   dua: string;
   transliteration?: string;
   meaning?: string;
   source?: string;
+  text?: string;
 };
 
 export default function CategoriesPage() {
   const [activeCategory, setActiveCategory] = useState<string>(categories.filter(c => !specialCategoryLinks[c.id])[0].id);
   const [isGenerating, setIsGenerating] = useState(false);
-  const [categoryDuas, setCategoryDuas] = useState<Record<string, DuaItem[]>>(getCategoryDuasGrouped());
+  const [categoryDuas, setCategoryDuas] = useState<Record<string, LocalDuaItem[]>>(() => {
+    const grouped = getCategoryDuasGrouped();
+    return grouped as Record<string, LocalDuaItem[]>;
+  });
   const { toast } = useToast();
-  
-  // باقي الكود...
 
   const handleGenerateDua = async () => {
     if (!activeCategory || specialCategoryLinks[activeCategory]) return;
@@ -44,7 +46,7 @@ export default function CategoriesPage() {
       
       setCategoryDuas(prev => ({
         ...prev,
-        [activeCategory]: [...(prev[activeCategory] || []), ...duas]
+        [activeCategory]: [...(prev[activeCategory] || []), ...duas as LocalDuaItem[]]
       }));
 
       toast({
@@ -116,7 +118,9 @@ export default function CategoriesPage() {
         {activeCategoryInfo && !specialCategoryLinks[activeCategoryInfo.id] && (
           <div className="space-y-8 animate-fade-in text-left">
             {currentDuas.map((dua, index) => {
-              const duaText = typeof dua === 'string' ? dua : dua.dua;
+              const duaText = typeof dua === 'string' 
+                ? dua 
+                : (dua as any).text || (dua as any).dua || '';
               return (
                 <DuaCard 
                   key={`${activeCategory}-${index}`} 
@@ -139,13 +143,4 @@ export default function CategoriesPage() {
                   {currentDuas.length >= 50 ? 'تم الوصول للحد الأقصى' : 'استكشف المزيد من الأدعية بالذكاء الاصطناعي'}
                 </span>
               </Button>
-               <p className="mt-4 text-cream/30 text-sm italic">
-                {`يمكنك استكشاف ما يصل إلى 50 دعاءً في كل قسم`}
-              </p>
-            </div>
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
+               <p classNa
