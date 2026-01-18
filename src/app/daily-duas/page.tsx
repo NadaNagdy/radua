@@ -14,7 +14,7 @@ export default function DailyDuasPage() {
           {dailyDuas.map((dua) => (
             <Link 
               key={dua.id} 
-              href={`/daily-duas/${dua.day}`} 
+              href={`/daily-duas/${dua.id}`}
               className="block bg-card-gradient border border-gold/20 rounded-2xl p-6 hover:border-gold/60 hover:scale-105 transition-all shadow-lg"
             >
               <h2 className="font-amiri text-2xl text-gold mb-3">{dua.arabicTitle}</h2>
